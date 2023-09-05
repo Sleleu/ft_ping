@@ -6,15 +6,19 @@
 #    By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/04 12:59:59 by sleleu            #+#    #+#              #
-#    Updated: 2023/09/05 10:29:13 by sleleu           ###   ########.fr        #
+#    Updated: 2023/09/05 10:59:31 by sleleu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ping
 
-SRC = main.c
+SRC_PATH = src
+OBJ_PATH = obj
 
-OBJ = $(SRC:.c=.o)
+SOURCES = main.c
+
+SRC = $(addprefix $(SRC_PATH)/,$(SOURCES))
+OBJ = $(addprefix $(OBJ_PATH)/,$(SOURCES:.c=.o))
 
 CC = gcc
 
@@ -23,13 +27,19 @@ CFLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): libft/libft.a $(OBJ)
-		$(CC) $(CFLAGS)  $(SRC) -L libft -lft -o $(NAME)
+		$(CC) $(CFLAGS)  $(OBJ) -L libft -lft -o $(NAME)
+
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c | $(OBJ_PATH)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_PATH):
+	mkdir -p $(OBJ_PATH)
 
 libft/libft.a:
 	make -C libft
 
 clean:
-		rm -rf $(OBJ)
+		rm -rf $(OBJ_PATH)
 		make clean -C libft
 
 fclean: clean
