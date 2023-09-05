@@ -13,73 +13,90 @@
 #include "../include/ft_ping.h"
 #include "../libft/libft.h" 
 
-void init_addrinfo(struct addrinfo *hints)
-{
-	ft_memset(hints, 0, sizeof(*hints)); // use libft
-	hints->ai_family = AF_UNSPEC;
-	hints->ai_socktype = SOCK_STREAM;
-	hints->ai_flags = AI_PASSIVE;
-	hints->ai_protocol = 0;
-}
+t_data g_data; // global
 
-void	init_socket(struct addrinfo *ptr_info)
-{
-	int sockfd = socket(AF_INET, ptr_info->ai_socktype ,ptr_info->ai_protocol);
+// void init_addrinfo(void)
+// {
+// 	struct addrinfo 	hints;
+// 	struct addrinfo		*result;
 
+// 	ft_memset(hints, 0, sizeof(*hints));
+// 	hints.ai_family = AF_INET;
+// 	hints.ai_socktype = SOCK_RAW;
+// 	hints.ai_flags = AI_PASSIVE;
+// 	hints.ai_protocol = IPPROTO_ICMP;
+
+// 	int status = getaddrinfo(g_data->host, NULL, &hints, &result);
+// 	if (status != 0)
+// 	{
+// 		fprintf(stderr, "ft_ping: %s: %s\n", data.host, gai_strerror(status));
+// 		exit (2);
+// 	}
+// 	g_data->sockaddr = (struct sockaddr_in *)result->ai_addr;
+// }
+
+int	init_socket(void)
+{
+	int sockfd;
+	int optval = 1;
+
+	sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (sockfd == -1)
 	{
-		display_error("Error on socket");
-		freeaddrinfo(ptr_info);
+		perror("socket");
 		close(sockfd);
 		exit(EXIT_FAILURE);
 	}
+	if (setsockopt(sockfd, IPPROTO_IP, IP_HDRINCL, &optval, sizeof(int)) == -1)
+	{
+		close(sockfd);
+		exit(EXIT_FAILURE);
+	}
+	printf("DEBUG: Socket successfully initialised\n");
+	return (sockfd);
 }
 
-void init_structure(t_struct *data, char *argv)
+void init_data(char *argv)
 {
-	data->socketfd = 0;
-	data->result = NULL;
-	data->rp = NULL;
-	data->host = argv;
+	g_data.sockfd = init_socket();
+	g_data.result = NULL;
+	g_data.host = argv;
 }
 
-void	get_data(t_struct *data)
-{
-	// get ipstr
-    void *addr;
-    struct sockaddr_in *ipv4 = (struct sockaddr_in *)data->result->ai_addr;
-    addr = &(ipv4->sin_addr);
-    inet_ntop(data->result->ai_family, addr, data->ipstr, sizeof(data->ipstr));
+// void	get_data(t_struct *data)
+// {
+// 	// get ipstr
+//     void *addr;
+//     struct sockaddr_in *ipv4 = (struct sockaddr_in *)data->result->ai_addr;
+//     addr = &(ipv4->sin_addr);
+//     inet_ntop(data->result->ai_family, addr, data->ipstr, sizeof(data->ipstr));
 
-	// get host name
-    inet_pton(AF_INET, data->ipstr, &(ipv4->sin_addr));
-    int status = getnameinfo((struct sockaddr *)data->result->ai_addr, sizeof(struct sockaddr_in), data->hostname, NI_MAXHOST, NULL, 0, 0);
-    if (status != 0) {
-        fprintf(stderr, "ft_ping: getnameinfo: %s\n", gai_strerror(status));
-		exit(2);
-    }
-}
+// 	// get host name
+//     inet_pton(AF_INET, data->ipstr, &(ipv4->sin_addr));
+//     int status = getnameinfo((struct sockaddr *)data->result->ai_addr, sizeof(struct sockaddr_in), data->hostname, NI_MAXHOST, NULL, 0, 0);
+//     if (status != 0) {
+//         fprintf(stderr, "ft_ping: getnameinfo: %s\n", gai_strerror(status));
+// 		exit(2);
+//     }
+// }
 
 int main(int argc, char **argv)
 {
-	t_struct data;
-
+	if (getuid() != 0)
+	{
+		fprintf(stderr, "ft_ping: Operation not permitted\n");
+		return (1);
+	}
 	if (argc < 2)
 	{
 		fprintf(stderr, "ft_ping: usage error: Destination address required\n");
 		return (1);
 	}
-	init_structure(&data, argv[1]);
-	init_addrinfo(&data.hints);
-	int status = getaddrinfo(data.host, NULL, &data.hints, &data.result);
-	if (status != 0)
-	{
-		fprintf(stderr, "ft_ping: %s: %s\n", data.host, gai_strerror(status));
-		return (2);
-	}
-	get_data(&data);
-	printf("PING %s (%s)\n", data.host, data.ipstr);
-	printf("Hostname : %s\n", data.hostname);
+	init_data(argv[1]);
+	// init_addrinfo(&data.hints);
+	// get_data(&data);
+	// printf("PING %s (%s)\n", data.host, data.ipstr);
+	// printf("Hostname : %s\n", data.hostname);
 	//display_ip(data.result);
 
 	// gettimeofday(&data.current_time, NULL);
@@ -88,7 +105,7 @@ int main(int argc, char **argv)
 	// data.pid = getpid();
 	// printf("PID : %d\n", data.pid);
 
-	freeaddrinfo(data.result);
+	// freeaddrinfo(data.result);
 	// printf("Socket : %d\n", data.socketfd);
 	return (0);
 }

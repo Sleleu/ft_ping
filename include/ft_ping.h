@@ -17,28 +17,20 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define RESET "\e[0m"
-
-typedef struct s_struct
+typedef struct s_data
 {
-	int					socketfd;
+	int					sockfd;
 	pid_t 				pid;
 	struct addrinfo		*result;
-	struct addrinfo		*rp;
 	struct addrinfo 	hints;
 	struct timeval		current_time;
-	struct sockaddr_in	sockaddr;
-
-	char ipstr[INET_ADDRSTRLEN];
+	struct sockaddr_in	*sockaddr;
+	char ipstr[INET6_ADDRSTRLEN];
 	char *host;
 	char hostname[NI_MAXHOST];
-}	t_struct;
+}	t_data;
+
+extern t_data g_data;
 
 void	display_error(char *error);
 void	display_ip(struct addrinfo *result);

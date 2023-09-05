@@ -13,6 +13,8 @@
 #include "../include/ft_ping.h"
 #include "../libft/libft.h" 
 
+//t_data g_data;
+
 void	display_error(char *error)
 {
 	ft_putstr_fd(RED,2);
@@ -20,12 +22,12 @@ void	display_error(char *error)
 	ft_putstr_fd("\n"RESET, 2);
 }
 
-void display_ip(struct addrinfo *result)
-{
-        void *addr;
-        char ipstr[INET_ADDRSTRLEN];
-        struct sockaddr_in *ipv4 = (struct sockaddr_in *)result->ai_addr;
-        addr = &(ipv4->sin_addr);
-        inet_ntop(result->ai_family, addr, ipstr, sizeof(ipstr));
-        printf("%s\n", ipstr);
-}
+// void display_ip(struct addrinfo *result)
+// {
+//         void *addr;
+//         char ipstr[INET_ADDRSTRLEN];
+//         struct sockaddr_in *ipv4 = (struct sockaddr_in *)result->ai_addr;
+//         addr = &(ipv4->sin_addr);
+//         inet_ntop(result->ai_family, addr, ipstr, sizeof(ipstr));
+//         printf("%s\n", ipstr);
+// }
