@@ -6,70 +6,80 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:11:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/05 10:28:03 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/05 12:23:11 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include "../libft/libft.h"
+#include "../include/ft_ping.h"
+#include "../libft/libft.h" 
 
-void init_addrinfo(struct addrinfo *address)
+void init_addrinfo(struct addrinfo *hints)
 {
-	memset(address, 0, sizeof(*address)); // use libft
-	address->ai_family = AF_UNSPEC;
-	address->ai_socktype = SOCK_STREAM;
-	address->ai_flags = AI_PASSIVE;
-	address->ai_protocol = 0;
+	ft_memset(hints, 0, sizeof(*hints)); // use libft
+	hints->ai_family = AF_UNSPEC;
+	hints->ai_socktype = SOCK_STREAM;
+	hints->ai_flags = AI_PASSIVE;
+	hints->ai_protocol = 0;
 }
 
-void print_addrinfo(struct addrinfo *address)
+void	init_socket(struct addrinfo *ptr_info)
 {
-	printf("ai_flag : %d\nai_family %d\nai_socktype %d\nai_protocol %d\n", address->ai_flags, address->ai_family, address->ai_socktype, address->ai_protocol);
-	printf("ai_addrlen : %d\n", address->ai_addrlen);
+	int sockfd = socket(AF_INET, ptr_info->ai_socktype ,ptr_info->ai_protocol);
+
+	if (sockfd == -1)
+	{
+		display_error("Error on socket");
+		freeaddrinfo(ptr_info);
+		close(sockfd);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void init_structure(t_struct *data, char *argv)
+{
+	data->socketfd = 0;
+	data->result = NULL;
+	data->rp = NULL;
+	data->host = argv;
+}
+
+void	get_data(t_struct *data)
+{
+	// get ipstr
+    void *addr;
+    struct sockaddr_in *ipv4 = (struct sockaddr_in *)data->result->ai_addr;
+    addr = &(ipv4->sin_addr);
+    inet_ntop(data->result->ai_family, addr, data->ipstr, sizeof(data->ipstr));
 }
 
 int main(int argc, char **argv)
 {
-	struct addrinfo address;
-	struct addrinfo *ptr_info;
-	struct timeval time;
-	char *ip;
-	
+	t_struct data;
+
 	if (argc < 2)
 	{
-		printf("ping: usage error: Destination address required\n"); // print on stderr
+		fprintf(stderr, "ft_ping: usage error: Destination address required\n");
 		return (1);
 	}
-	init_addrinfo(&address);
-	ip = argv[1];
-	if (getaddrinfo(ip, NULL, &address, &ptr_info) != 0)
+	init_structure(&data, argv[1]);
+	init_addrinfo(&data.hints);
+	int status = getaddrinfo(data.host, NULL, &data.hints, &data.result);
+	if (status != 0)
 	{
-		printf("getaddrinfo() error\n");
-		return (1);
+		fprintf(stderr, "ft_ping: %s: %s\n", data.host, gai_strerror(status));
+		return (2);
 	}
-	print_addrinfo(&address);
-	gettimeofday(&time, NULL);
-	printf("time : %ld\n", time.tv_sec);
+	get_data(&data);
+	fprintf(stdout, "PING %s (%s)\n", data.host, data.ipstr);
+	//display_ip(data.result);
 
-	pid_t pid;
-	pid = getpid();
-	printf("PID : %d\n", pid);
+	// gettimeofday(&data.current_time, NULL);
+	// printf("time : %ld\n", data.current_time.tv_sec);
 
-	int sockfd = socket(AF_INET, ptr_info->ai_socktype ,ptr_info->ai_protocol);
-	if (sockfd == -1)
-	{
-		printf("Error on socket\n");
-		freeaddrinfo(ptr_info);
-		close(sockfd);
-		return (1);
-	}
-	freeaddrinfo(ptr_info);
-	printf("Socket : %d\n", sockfd);
-	ft_putstr_fd("test\n", 1);
+	// data.pid = getpid();
+	// printf("PID : %d\n", data.pid);
+
+	freeaddrinfo(data.result);
+	// printf("Socket : %d\n", data.socketfd);
 	return (0);
 }

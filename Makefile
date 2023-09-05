@@ -6,7 +6,7 @@
 #    By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/04 12:59:59 by sleleu            #+#    #+#              #
-#    Updated: 2023/09/05 10:59:31 by sleleu           ###   ########.fr        #
+#    Updated: 2023/09/05 11:06:22 by sleleu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ NAME = ft_ping
 SRC_PATH = src
 OBJ_PATH = obj
 
-SOURCES = main.c
+SOURCES =	main.c \
+			display.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SOURCES))
 OBJ = $(addprefix $(OBJ_PATH)/,$(SOURCES:.c=.o))
