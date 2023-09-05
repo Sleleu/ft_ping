@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:11:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/05 12:23:11 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/05 12:38:13 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ void	get_data(t_struct *data)
     struct sockaddr_in *ipv4 = (struct sockaddr_in *)data->result->ai_addr;
     addr = &(ipv4->sin_addr);
     inet_ntop(data->result->ai_family, addr, data->ipstr, sizeof(data->ipstr));
+
+	// get host name
+    inet_pton(AF_INET, data->ipstr, &(ipv4->sin_addr));
+    int status = getnameinfo((struct sockaddr *)data->result->ai_addr, sizeof(struct sockaddr_in), data->hostname, NI_MAXHOST, NULL, 0, 0);
+    if (status != 0) {
+        fprintf(stderr, "ft_ping: getnameinfo: %s\n", gai_strerror(status));
+		exit(2);
+    }
 }
 
 int main(int argc, char **argv)
@@ -70,7 +78,8 @@ int main(int argc, char **argv)
 		return (2);
 	}
 	get_data(&data);
-	fprintf(stdout, "PING %s (%s)\n", data.host, data.ipstr);
+	printf("PING %s (%s)\n", data.host, data.ipstr);
+	printf("Hostname : %s\n", data.hostname);
 	//display_ip(data.result);
 
 	// gettimeofday(&data.current_time, NULL);

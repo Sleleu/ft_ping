@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/05 12:24:43 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/05 12:35:43 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_struct
 
 	char ipstr[INET_ADDRSTRLEN];
 	char *host;
+	char hostname[NI_MAXHOST];
 }	t_struct;
 
 void	display_error(char *error);
