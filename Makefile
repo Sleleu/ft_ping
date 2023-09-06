@@ -6,7 +6,7 @@
 #    By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/04 12:59:59 by sleleu            #+#    #+#              #
-#    Updated: 2023/09/05 11:06:22 by sleleu           ###   ########.fr        #
+#    Updated: 2023/09/06 12:25:58 by sleleu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRC_PATH = src
 OBJ_PATH = obj
 
 SOURCES =	main.c \
+			init_data.c \
 			display.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SOURCES))
