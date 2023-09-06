@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 23:59:39 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/07 00:53:59 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@
 #include <netdb.h>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
+#include <signal.h>
 #include "../libft/libft.h" 
 
 #define PING_PACKET_SIZE 64
+#define TTL 64
 
 typedef struct s_packet
 {
@@ -43,7 +45,8 @@ typedef struct s_data
 	int					sequence;
 	t_packet			packet;
 	struct timeval		send_time;
-	struct timeval		rec_time;		
+	struct timeval		rec_time;
+	int					signal_code;	
 }	t_data;
 
 extern t_data g_data;
@@ -60,6 +63,8 @@ void				get_domainname(void);
 void				init_data(char *argv);
 
 /* DISPLAY */
+void				display_ping_header(void);
+void				display_ping_statistics(void);
 void				refresh_ping_info(void);
 void    			print_data(void);
 

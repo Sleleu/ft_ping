@@ -6,13 +6,19 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:11:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 23:58:39 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/07 00:51:04 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_ping.h"
 
 t_data g_data; // global
+
+void	signal_handler(int signal)
+{
+	if ((signal == SIGINT))
+		g_data.signal_code = 1;
+}
 
 void	exit_failure(int code)
 {
@@ -36,14 +42,18 @@ int main(int argc, char **argv)
 	}
 	init_data(argv[1]);
 	//print_data();
-
+	signal(SIGINT, signal_handler);
+	display_ping_header();
 	while(1)
 	{
+		if (g_data.signal_code == 1)
+			break;
 		create_packet();
 		receive_packet();
 		refresh_ping_info();
 		usleep(1000000);
 	}
+	display_ping_statistics();
     freeaddrinfo(g_data.result);
 	return (0);
 }

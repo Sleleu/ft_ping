@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:25:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 23:57:55 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/07 00:52:53 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void create_packet(void)
     packet.ip_header.ihl = 5;
     packet.ip_header.tot_len = htons(sizeof(packet));
     packet.ip_header.protocol = IPPROTO_ICMP; 
-    packet.ip_header.ttl = 64;
+    packet.ip_header.ttl = TTL;
     packet.ip_header.daddr = g_data.sockaddr->sin_addr.s_addr;
     
     // icmp_header initialisation

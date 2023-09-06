@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 12:23:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 23:58:14 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/07 00:27:57 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	get_domainname(void)
 
 void	init_data(char *argv)
 {
+    g_data.signal_code = 0;
     g_data.result = NULL;
     g_data.sequence = 0;
 	g_data.sockfd = init_socket();
