@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:25:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 22:08:15 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 23:14:47 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void create_packet(void)
     // ip_header initialisation
     packet.ip_header.version = 4;
     packet.ip_header.ihl = 5;
-    packet.ip_header.tot_len = sizeof(packet);
+    packet.ip_header.tot_len = htons(sizeof(packet));
     packet.ip_header.protocol = IPPROTO_ICMP; 
     packet.ip_header.ttl = 64;
     packet.ip_header.daddr = g_data.sockaddr->sin_addr.s_addr;
@@ -49,11 +49,14 @@ void create_packet(void)
     packet.icmp_header.type = ICMP_ECHO;
     packet.icmp_header.code = 0;
     packet.icmp_header.un.echo.id = g_data.pid;
-    packet.icmp_header.un.echo.sequence = 1; // à incrémenter par la suite
+    packet.icmp_header.un.echo.sequence = g_data.sequence++;
     packet.icmp_header.checksum = 0;    
-
-    printf("sizeof packet %ld\n", sizeof(packet));
     packet.icmp_header.checksum = checksum(&(packet.icmp_header), sizeof(packet.icmp_header) + sizeof(packet.data));
+
+    //get time
+    gettimeofday(&g_data.send_time, NULL);
+    printf("send time: %ld\n", g_data.send_time.tv_sec);  
+    // send packet
     ssize_t bytes_sent = sendto(g_data.sockfd, &packet, PING_PACKET_SIZE, 0, (struct sockaddr *)g_data.sockaddr, sizeof(*g_data.sockaddr));
     if (bytes_sent == -1) {
         perror("sendto");
@@ -64,5 +67,28 @@ void create_packet(void)
 
 void receive_packet(void)
 {
-    printf("Receive_packet()\n");    
+    char buffer[PING_PACKET_SIZE];
+    struct iovec iov;
+    struct msghdr msg;
+
+    iov.iov_base = buffer; // ptr vers debut du segment mémoire
+    iov.iov_len = PING_PACKET_SIZE;
+
+    msg.msg_name = g_data.sockaddr;
+    msg.msg_namelen = sizeof(*g_data.sockaddr);
+    msg.msg_iov = &iov;
+    msg.msg_iovlen = 1;
+    msg.msg_control = NULL;
+    msg.msg_controllen = 0;
+    msg.msg_flags = 0;
+
+    ssize_t bytes_received = recvmsg(g_data.sockfd, &msg, 0);
+    if (bytes_received == -1)
+    {
+        perror("error when receive echo reply"); // à changer après
+        exit(EXIT_FAILURE);
+    }
+    printf("Receive_packet(): bytes received = %ld\n", bytes_received);  
+    gettimeofday(&g_data.receive_time, NULL);
+    printf("receive time: %ld\n", g_data.receive_time.tv_sec);
 }

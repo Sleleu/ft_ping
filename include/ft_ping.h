@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 22:10:25 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 23:04:06 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ typedef struct s_data
 	char 				*host;
 	char 				domainname[NI_MAXHOST]; // FQDN - Fully Qualified Domain Name
 	int					sequence;
-	t_packet			packet;				
+	t_packet			packet;
+	struct timeval		send_time;
+	struct timeval		receive_time;		
 }	t_data;
 
 extern t_data g_data;
