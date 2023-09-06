@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 12:23:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 13:57:49 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 21:23:55 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void init_sockaddr(void)
 	struct addrinfo		*result;
 
 	ft_memset(&hints, 0, sizeof(struct addrinfo));
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_RAW;
 	hints.ai_flags = AI_PASSIVE;
 	hints.ai_protocol = IPPROTO_ICMP;
@@ -48,13 +48,18 @@ int     init_socket(void)
 
 void	get_ipstr(void)
 {
-    if (g_data.sockaddr->sin_family == AF_INET) {
+    if (g_data.sockaddr->sin_family == AF_INET)
+    {
         struct sockaddr_in *ipv4 = (struct sockaddr_in *)g_data.sockaddr;
         inet_ntop(AF_INET, &(ipv4->sin_addr), g_data.ipstr, INET_ADDRSTRLEN);
-    } else if (g_data.sockaddr->sin_family == AF_INET6) {
+    }
+    else if (g_data.sockaddr->sin_family == AF_INET6)
+    {
         struct sockaddr_in6 *ipv6 = (struct sockaddr_in6 *)g_data.sockaddr;
         inet_ntop(AF_INET6, &(ipv6->sin6_addr), g_data.ipstr, INET6_ADDRSTRLEN);
-    } else {
+    }
+    else
+    {
         fprintf(stderr, "ft_ping: Unknown address family\n");
         exit_failure(2);
     }

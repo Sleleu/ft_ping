@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 13:37:15 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 22:10:25 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,18 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <netinet/ip.h>
+#include <netinet/ip_icmp.h>
 #include "../libft/libft.h" 
+
+#define PING_PACKET_SIZE 64
+
+typedef struct s_packet
+{
+	struct iphdr	ip_header;
+	struct icmphdr	icmp_header;
+	char 			data[PING_PACKET_SIZE - (sizeof(struct icmphdr) + sizeof(struct iphdr))];
+}	t_packet;
 
 typedef struct s_data
 {
@@ -26,9 +37,11 @@ typedef struct s_data
 	struct addrinfo 	hints;
 	struct timeval		current_time;
 	struct sockaddr_in	*sockaddr;
-	char ipstr[INET6_ADDRSTRLEN];
-	char *host;
-	char domainname[NI_MAXHOST]; // FQDN - Fully Qualified Domain Name
+	char 				ipstr[INET6_ADDRSTRLEN];
+	char 				*host;
+	char 				domainname[NI_MAXHOST]; // FQDN - Fully Qualified Domain Name
+	int					sequence;
+	t_packet			packet;				
 }	t_data;
 
 extern t_data g_data;
@@ -51,3 +64,4 @@ void    			print_data(void);
 /* PACKET */
 
 void				create_packet(void);
+void				receive_packet(void);

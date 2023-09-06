@@ -6,13 +6,11 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:05:37 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 12:26:25 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 22:03:58 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_ping.h"
-
-//t_data g_data;
 
 void	display_error(char *error)
 {
