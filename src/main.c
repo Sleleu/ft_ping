@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:11:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 22:02:57 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 23:58:39 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,15 @@ int main(int argc, char **argv)
 		return (1);
 	}
 	init_data(argv[1]);
-	print_data();
+	//print_data();
 
-    create_packet();
-    receive_packet();
+	while(1)
+	{
+		create_packet();
+		receive_packet();
+		refresh_ping_info();
+		usleep(1000000);
+	}
     freeaddrinfo(g_data.result);
 	return (0);
 }

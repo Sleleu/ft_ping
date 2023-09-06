@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 12:23:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 23:18:24 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 23:58:14 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int     init_socket(void)
 		exit_failure(1);
 	if (setsockopt(sockfd, IPPROTO_IP, IP_HDRINCL, &optval, sizeof(int)) == -1)
 		exit_failure(1);
-	printf("DEBUG: Socket successfully initialised\n");
+	//printf("DEBUG: Socket successfully initialised\n");
 	return (sockfd);
 }
 
@@ -77,7 +77,7 @@ void	get_domainname(void)
 void	init_data(char *argv)
 {
     g_data.result = NULL;
-    g_data.sequence = 1;
+    g_data.sequence = 0;
 	g_data.sockfd = init_socket();
 	g_data.pid = getpid();
 	g_data.host = argv;

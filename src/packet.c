@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:25:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 23:14:47 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 23:57:55 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,15 @@ void create_packet(void)
 
     //get time
     gettimeofday(&g_data.send_time, NULL);
-    printf("send time: %ld\n", g_data.send_time.tv_sec);  
+    //printf("send time: %ld\n", g_data.send_time.tv_sec); 
+
     // send packet
     ssize_t bytes_sent = sendto(g_data.sockfd, &packet, PING_PACKET_SIZE, 0, (struct sockaddr *)g_data.sockaddr, sizeof(*g_data.sockaddr));
     if (bytes_sent == -1) {
         perror("sendto");
         exit(EXIT_FAILURE);
     }
-    printf("create_packet(): bytes sent = %ld\n", bytes_sent);
+    //printf("create_packet(): bytes sent = %ld\n", bytes_sent);
 }
 
 void receive_packet(void)
@@ -88,7 +89,7 @@ void receive_packet(void)
         perror("error when receive echo reply"); // à changer après
         exit(EXIT_FAILURE);
     }
-    printf("Receive_packet(): bytes received = %ld\n", bytes_received);  
-    gettimeofday(&g_data.receive_time, NULL);
-    printf("receive time: %ld\n", g_data.receive_time.tv_sec);
+    //printf("Receive_packet(): bytes received = %ld\n", bytes_received);  
+    gettimeofday(&g_data.rec_time, NULL);
+    //printf("receive time: %ld\n", g_data.rec_time.tv_sec);
 }

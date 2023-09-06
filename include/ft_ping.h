@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 23:04:06 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 23:59:39 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_data
 	int					sequence;
 	t_packet			packet;
 	struct timeval		send_time;
-	struct timeval		receive_time;		
+	struct timeval		rec_time;		
 }	t_data;
 
 extern t_data g_data;
@@ -60,10 +60,12 @@ void				get_domainname(void);
 void				init_data(char *argv);
 
 /* DISPLAY */
-void				display_error(char *error);
+void				refresh_ping_info(void);
 void    			print_data(void);
 
 /* PACKET */
-
 void				create_packet(void);
 void				receive_packet(void);
+
+/* GET_TIME */
+double	get_time_ms(struct timeval *send_time, struct timeval *rec_time);
