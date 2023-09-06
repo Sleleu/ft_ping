@@ -6,13 +6,13 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 12:23:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 12:27:50 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 13:57:49 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_ping.h"
 
-struct sockaddr_in* init_sockaddr(void)
+void init_sockaddr(void)
 {
 	struct addrinfo 	hints;
 	struct addrinfo		*result;
@@ -23,12 +23,13 @@ struct sockaddr_in* init_sockaddr(void)
 	hints.ai_flags = AI_PASSIVE;
 	hints.ai_protocol = IPPROTO_ICMP;
 	int status = getaddrinfo(g_data.host, NULL, &hints, &result);
-	if (status != 0)
+    if (status != 0)
 	{
 		fprintf(stderr, "ft_ping: %s: %s\n", g_data.host, gai_strerror(status));
-		exit (2);
+		exit_failure(2);
 	}
-	return ((struct sockaddr_in *)result->ai_addr);
+    g_data.result = result;	
+    g_data.sockaddr = (struct sockaddr_in *)result->ai_addr;
 }
 
 int     init_socket(void)
@@ -38,9 +39,9 @@ int     init_socket(void)
 
 	sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (sockfd == -1)
-		exit_failure();
+		exit_failure(1);
 	if (setsockopt(sockfd, IPPROTO_IP, IP_HDRINCL, &optval, sizeof(int)) == -1)
-		exit_failure();
+		exit_failure(1);
 	printf("DEBUG: Socket successfully initialised\n");
 	return (sockfd);
 }
@@ -55,7 +56,7 @@ void	get_ipstr(void)
         inet_ntop(AF_INET6, &(ipv6->sin6_addr), g_data.ipstr, INET6_ADDRSTRLEN);
     } else {
         fprintf(stderr, "ft_ping: Unknown address family\n");
-        exit(2);
+        exit_failure(2);
     }
 }
 
@@ -64,16 +65,17 @@ void	get_domainname(void)
     int status = getnameinfo((struct sockaddr *)g_data.sockaddr, sizeof(struct sockaddr_storage), g_data.domainname, NI_MAXHOST, NULL, 0, 0);
     if (status != 0) {
         fprintf(stderr, "ft_ping: getnameinfo: %s\n", gai_strerror(status));
-        exit(2);
+        exit_failure(2);
     }
 }
 
 void	init_data(char *argv)
 {
+    g_data.result = NULL;
 	g_data.sockfd = init_socket();
 	g_data.pid = getpid();
 	g_data.host = argv;
-	g_data.sockaddr = init_sockaddr();
+	init_sockaddr();
 	get_ipstr();
 	get_domainname();
 }

@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/06 12:28:12 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/06 13:37:15 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ extern t_data g_data;
 void				exit_failure();
 
 /* INIT_DATA */
-struct sockaddr_in*	init_sockaddr(void);
+void				init_sockaddr(void);
 int					init_socket(void);
 void				get_ipstr(void);
 void				get_domainname(void);
@@ -47,3 +47,7 @@ void				init_data(char *argv);
 /* DISPLAY */
 void				display_error(char *error);
 void    			print_data(void);
+
+/* PACKET */
+
+void				create_packet(void);
