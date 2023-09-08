@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 13:36:55 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:12:21 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_data
 	char 				domainname[NI_MAXHOST]; // FQDN - Fully Qualified Domain Name
 	int					sequence;
 	t_packet			packet;
+	struct timeval		start_time;
 	struct timeval		send_time;
 	struct timeval		rec_time;
 	int					signal_code;	
@@ -73,5 +74,5 @@ void				create_packet(void);
 void				receive_packet(void);
 
 /* GET_TIME */
-double	get_time_ms(struct timeval *send_time, struct timeval *rec_time);
+double	get_time_ms(struct timeval *start, struct timeval *end);
 void	get_timeday(struct timeval *timeval);

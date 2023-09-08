@@ -21,11 +21,11 @@ void	get_timeday(struct timeval *timeval)
 	}
 }
 
-double	get_time_ms(struct timeval *send_time, struct timeval *rec_time)
+double	get_time_ms(struct timeval *start, struct timeval *end)
 {
 	double elapsed_time;
 
-	elapsed_time = (rec_time->tv_sec - send_time->tv_sec) * 1000.0;
-	elapsed_time += (rec_time->tv_usec - send_time->tv_usec) / 1000.0;
+	elapsed_time = (end->tv_sec - start->tv_sec) * 1000.0;
+	elapsed_time += (end->tv_usec - start->tv_usec) / 1000.0;
 	return elapsed_time;
 }

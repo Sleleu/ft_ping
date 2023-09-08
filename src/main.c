@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:11:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 13:37:41 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:13:38 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int main(int argc, char **argv)
 	//print_data();
 	signal(SIGINT, signal_handler);
 	display_ping_header();
+	get_timeday(&g_data.start_time);
 	while(1)
 	{
 		if (g_data.signal_code == 1)
