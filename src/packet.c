@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:25:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 13:37:17 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:34:49 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,10 @@ void create_packet(void)
     // send packet
     ssize_t bytes_sent = sendto(g_data.sockfd, &packet, PING_PACKET_SIZE, 0, (struct sockaddr *)g_data.sockaddr, sizeof(*g_data.sockaddr));
     if (bytes_sent == -1) {
-        perror("sendto");
+        fprintf(stderr, "ft_ping: sendto error\n");
         exit(EXIT_FAILURE);
     }
+    alarm(1);
     //printf("create_packet(): bytes sent = %ld\n", bytes_sent);
 }
 
@@ -86,7 +87,7 @@ void receive_packet(void)
     ssize_t bytes_received = recvmsg(g_data.sockfd, &msg, 0);
     if (bytes_received == -1)
     {
-        perror("error when receive echo reply"); // à changer après
+        fprintf(stderr,"ft_ping: recvmsg error\n");
         exit(EXIT_FAILURE);
     }
     //printf("Receive_packet(): bytes received = %ld\n", bytes_received);  

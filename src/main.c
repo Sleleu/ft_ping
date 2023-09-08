@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:11:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 14:13:38 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:33:10 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,15 @@ t_data g_data; // global
 
 void	signal_handler(int signal)
 {
-	if ((signal == SIGINT))
-		g_data.signal_code = 1;
+	if (signal == SIGINT)
+	{
+		display_ping_statistics();
+		close(g_data.sockfd);
+		freeaddrinfo(g_data.result);
+		exit(EXIT_SUCCESS);
+	}
+	else if (signal == SIGALRM)
+		create_packet();
 }
 
 void	exit_failure(int code)
@@ -41,18 +48,15 @@ int main(int argc, char **argv)
 		return (1);
 	}
 	init_data(argv[1]);
-	//print_data();
 	signal(SIGINT, signal_handler);
+	signal(SIGALRM, signal_handler);
 	display_ping_header();
 	get_timeday(&g_data.start_time);
+	create_packet();
 	while(1)
 	{
-		if (g_data.signal_code == 1)
-			break;
-		create_packet();
 		receive_packet();
 		refresh_ping_info();
-		usleep(1000000);
 	}
 	display_ping_statistics();
     freeaddrinfo(g_data.result);
