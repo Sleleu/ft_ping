@@ -12,6 +12,15 @@
 
 #include "../include/ft_ping.h"
 
+void	get_timeday(struct timeval *timeval)
+{
+	if (gettimeofday(timeval, NULL) == -1)
+	{
+		fprintf(stderr, "ft_ping: gettimeofday error\n");
+		exit_failure(1);
+	}
+}
+
 double	get_time_ms(struct timeval *send_time, struct timeval *rec_time)
 {
 	double elapsed_time;

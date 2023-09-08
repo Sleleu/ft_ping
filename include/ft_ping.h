@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/07 00:53:59 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 13:36:55 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ extern t_data g_data;
 
 
 /* MAIN */
-void				exit_failure();
+void				exit_failure(int code);
 
 /* INIT_DATA */
 void				init_sockaddr(void);
@@ -74,3 +74,4 @@ void				receive_packet(void);
 
 /* GET_TIME */
 double	get_time_ms(struct timeval *send_time, struct timeval *rec_time);
+void	get_timeday(struct timeval *timeval);

@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:25:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/07 00:52:53 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 13:37:17 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void create_packet(void)
     packet.icmp_header.checksum = checksum(&(packet.icmp_header), sizeof(packet.icmp_header) + sizeof(packet.data));
 
     //get time
-    gettimeofday(&g_data.send_time, NULL);
+    get_timeday(&g_data.send_time);
     //printf("send time: %ld\n", g_data.send_time.tv_sec); 
 
     // send packet
@@ -90,6 +90,6 @@ void receive_packet(void)
         exit(EXIT_FAILURE);
     }
     //printf("Receive_packet(): bytes received = %ld\n", bytes_received);  
-    gettimeofday(&g_data.rec_time, NULL);
+    get_timeday(&g_data.rec_time);
     //printf("receive time: %ld\n", g_data.rec_time.tv_sec);
 }
