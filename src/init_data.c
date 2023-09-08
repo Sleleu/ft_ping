@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 12:23:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/07 00:27:57 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:02:21 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void init_sockaddr(void)
 	struct addrinfo		*result;
 
 	ft_memset(&hints, 0, sizeof(struct addrinfo));
-	hints.ai_family = AF_INET; // check si besoin unspec sur campus
+	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_RAW;
 	hints.ai_flags = AI_PASSIVE;
 	hints.ai_protocol = IPPROTO_ICMP;
@@ -76,12 +76,14 @@ void	get_domainname(void)
 
 void	init_data(char *argv)
 {
+	g_data.packet_received = 0;
     g_data.signal_code = 0;
     g_data.result = NULL;
     g_data.sequence = 0;
 	g_data.sockfd = init_socket();
 	g_data.pid = getpid();
 	g_data.host = argv;
+	get_timeday(&g_data.start_time);
 	init_sockaddr();
 	get_ipstr();
 	get_domainname();

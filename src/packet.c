@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:25:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 16:34:49 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:05:23 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,22 @@ void create_packet(void)
     //printf("create_packet(): bytes sent = %ld\n", bytes_sent);
 }
 
+void    analyse_packet(void *packet)
+{
+    struct icmphdr *icmp_header = packet + sizeof(struct iphdr);
+
+    if (icmp_header->type == ICMP_ECHO)
+        return ;
+    if (icmp_header->type != ICMP_ECHOREPLY)
+    {
+        if (icmp_header->type == ICMP_DEST_UNREACH)
+        printf("Destination Host Unreachable\n");
+    }
+    else
+        g_data.packet_received++;
+    refresh_ping_info();
+}
+
 void receive_packet(void)
 {
     char buffer[PING_PACKET_SIZE];
@@ -92,5 +108,6 @@ void receive_packet(void)
     }
     //printf("Receive_packet(): bytes received = %ld\n", bytes_received);  
     get_timeday(&g_data.rec_time);
+    analyse_packet(iov.iov_base);
     //printf("receive time: %ld\n", g_data.rec_time.tv_sec);
 }
