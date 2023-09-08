@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:05:37 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 22:25:21 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 23:54:02 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	refresh_ping_info(void)
 
 	if (g_data.sequence == 1)
 	{
+		get_timeday(&g_data.start_time);
 		g_data.max_time = time;
 		g_data.min_time = time;
 	}
@@ -37,17 +38,11 @@ void	refresh_ping_info(void)
 		printf("time=%.2f ms\n", time);
 }
 
-
 void    display_ping_statistics(void)
 {
-	struct timeval end_time;
-	double total_time;
-	
-	get_timeday(&end_time);
-	total_time = get_time_ms(&g_data.start_time, &end_time);
-    printf("\n--- %s ping statistics ---\n", g_data.host);
+	printf("\n--- %s ping statistics ---\n", g_data.host);
     printf("%d packets transmitted, %d received, %d%% packet loss, ", g_data.sequence, g_data.packet_received, 0);
-	printf("time %.0fms\n", total_time);
+	printf("time %.0fms\n", get_total_time());
     printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n", g_data.min_time,0.0,g_data.max_time,0.0);
 }
 

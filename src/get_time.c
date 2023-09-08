@@ -12,6 +12,20 @@
 
 #include "../include/ft_ping.h"
 
+double	get_total_time(void)
+{
+	struct timeval end_time;
+	double total_time;
+	
+	get_timeday(&end_time);
+	total_time = get_time_ms(&g_data.start_time, &g_data.rec_time);
+	if (g_data.rec_time.tv_sec == 0) // no packet received
+		total_time = get_time_ms(&g_data.start_time, &end_time);
+	if (g_data.sequence == 1) // only 1 packet sent
+		total_time = 0.0;
+	return (total_time);
+}
+
 void	get_timeday(struct timeval *timeval)
 {
 	if (gettimeofday(timeval, NULL) == -1)

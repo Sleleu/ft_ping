@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 14:11:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 16:42:54 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 23:56:58 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,11 @@ int main(int argc, char **argv)
 		fprintf(stderr, "ft_ping: usage error: Destination address required\n");
 		return (1);
 	}
-	init_data(argv[1]);
 	signal(SIGINT, signal_handler);
 	signal(SIGALRM, signal_handler);
+	init_data(argv[1]);
 	display_ping_header();
+	get_timeday(&g_data.start_time);
 	create_packet();
 	while(1)
 		receive_packet();

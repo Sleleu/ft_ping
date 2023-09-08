@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 22:04:55 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 23:54:45 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,29 +69,30 @@ extern t_data g_data;
 
 
 /* MAIN */
-void				exit_failure(int code);
+void	exit_failure(int code);
 
 /* INIT_DATA */
-void				init_sockaddr(void);
-int					init_socket(void);
-void				get_ipstr(void);
-void				get_domainname(void);
-void				init_data(char *argv);
+void	init_sockaddr(void);
+int		init_socket(void);
+void	get_ipstr(void);
+void	get_domainname(void);
+void	init_data(char *argv);
 
 /* DISPLAY */
-void				display_ping_header(void);
-void				display_ping_statistics(void);
-void				refresh_ping_info(void);
-void    			print_data(void);
+void	display_ping_header(void);
+void	display_ping_statistics(void);
+void	refresh_ping_info(void);
+void    print_data(void);
 
 /* PACKET */
-void				create_packet(void);
-void				receive_packet(void);
+void	create_packet(void);
+void	receive_packet(void);
 
 /* ANALYSE_PACKET */
 char	*get_icmp_code(uint8_t code, t_icmp_code_list *code_list, int size);
 void	analyse_packet(void *packet);
 
 /* GET_TIME */
+double	get_total_time(void);
 double	get_time_ms(struct timeval *start, struct timeval *end);
 void	get_timeday(struct timeval *timeval);
