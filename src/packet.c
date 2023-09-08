@@ -6,11 +6,31 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:25:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 17:05:23 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:47:07 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_ping.h"
+
+struct icmp_diag {
+    int type;
+    const char *description;
+};
+
+struct icmp_diag icmp_diag[] = {
+    {ICMP_DEST_UNREACH, "Dest Unreachable"},
+    {ICMP_SOURCE_QUENCH, "Source Quench"},
+    {ICMP_REDIRECT, "Redirect"},
+    {ICMP_ECHO, "Echo Request"},
+    {ICMP_ROUTERADVERT, "Router Advertisement"},
+    {ICMP_TIME_EXCEEDED, "Time exceeded"},
+    {ICMP_TIMESTAMP, "Timestamp",},
+    {ICMP_TIMESTAMPREPLY, "Timestamp Reply"},
+    {ICMP_INFO_REQUEST, "Information Request"},
+    {ICMP_INFO_REPLY, "Information Reply"},
+    {ICMP_ADDRESS, "Address Mask Request"},
+    {ICMP_ADDRESSREPLY, "Address Mask Reply"},
+};
 
 unsigned short  checksum(void *address, int len)
 {
@@ -70,17 +90,24 @@ void create_packet(void)
 void    analyse_packet(void *packet)
 {
     struct icmphdr *icmp_header = packet + sizeof(struct iphdr);
+    int i = 0;
 
     if (icmp_header->type == ICMP_ECHO)
         return ;
     if (icmp_header->type != ICMP_ECHOREPLY)
     {
-        if (icmp_header->type == ICMP_DEST_UNREACH)
-        printf("Destination Host Unreachable\n");
+        for (; i < 12; i++)
+            if (icmp_diag[i].type == icmp_header->type)
+                break;
+        if (i != 12)
+            printf("%s\n", icmp_diag[i].description);
     }
     else
+    {
+        printf("icmp type: %d\n", icmp_header->type);
         g_data.packet_received++;
-    refresh_ping_info();
+        refresh_ping_info();
+    }
 }
 
 void receive_packet(void)
