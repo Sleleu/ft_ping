@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 21:49:52 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/08 22:04:55 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ typedef struct s_data
 	struct timeval		rec_time;
 	int					signal_code;
 	int					packet_received;
+	double				min_time;
+	double				max_time;
 }	t_data;
 
 extern t_data g_data;
