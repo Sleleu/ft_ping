@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 12:23:14 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/09 00:01:06 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/09 00:07:18 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	get_domainname(void)
 
 void	init_data(char *argv)
 {
+	g_data.nb_errors = 0;
 	g_data.packet_received = 0;
 	ft_memset(&g_data.rec_time, 0, sizeof(struct timeval));
 	ft_memset(&g_data.send_time, 0, sizeof(struct timeval));

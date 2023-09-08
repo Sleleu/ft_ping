@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:05:37 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 23:54:02 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/09 00:17:10 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,19 @@ void	refresh_ping_info(void)
 		printf("time=%.2f ms\n", time);
 }
 
+int		get_percent_loss(void)
+{
+	int	percent = ((g_data.sequence - g_data.packet_received) * 100) / g_data.sequence;
+	return (percent);
+}
+
 void    display_ping_statistics(void)
 {
 	printf("\n--- %s ping statistics ---\n", g_data.host);
-    printf("%d packets transmitted, %d received, %d%% packet loss, ", g_data.sequence, g_data.packet_received, 0);
+    printf("%d packets transmitted, %d received, ", g_data.sequence, g_data.packet_received);
+	if (g_data.nb_errors)
+		printf("+%d errors, ", g_data.nb_errors);
+	printf("%d%% packet loss, ", get_percent_loss());
 	printf("time %.0fms\n", get_total_time());
     printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n", g_data.min_time,0.0,g_data.max_time,0.0);
 }

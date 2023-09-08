@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 21:37:51 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 22:30:43 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/09 00:07:46 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void    analyse_packet(void *packet)
             for (; i < 12 && icmp_diag[i].type != icmp_header->type; i++);
             error = icmp_diag[i].description;
         }
+        g_data.nb_errors++;
     }
     else
     {
