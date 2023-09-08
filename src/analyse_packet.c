@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 21:37:51 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/09 00:07:46 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/09 00:42:58 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void    analyse_packet(void *packet)
     else
     {
         g_data.packet_received++;
-        refresh_ping_info();
     }
-    printf("error %s\n", error);
+    refresh_ping_info(error, icmp_header->un.echo.sequence);
 }

@@ -12,6 +12,18 @@
 
 #include "../include/ft_ping.h"
 
+void	refresh_min_max_time(double time)
+{
+	if (g_data.sequence == 1)
+	{
+		get_timeday(&g_data.start_time);
+		g_data.max_time = time;
+		g_data.min_time = time;
+	}
+	time < g_data.min_time ? g_data.min_time = time : (void)time;
+	time > g_data.max_time ? g_data.max_time = time : (void)time;
+}
+
 double	get_total_time(void)
 {
 	struct timeval end_time;

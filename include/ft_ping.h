@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 23:54:45 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/09 00:33:46 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_data
 	int					packet_received;
 	double				min_time;
 	double				max_time;
+	int					nb_errors;
 }	t_data;
 
 extern t_data g_data;
@@ -81,7 +82,7 @@ void	init_data(char *argv);
 /* DISPLAY */
 void	display_ping_header(void);
 void	display_ping_statistics(void);
-void	refresh_ping_info(void);
+void	refresh_ping_info(char *error, int sequence);
 void    print_data(void);
 
 /* PACKET */
@@ -93,6 +94,7 @@ char	*get_icmp_code(uint8_t code, t_icmp_code_list *code_list, int size);
 void	analyse_packet(void *packet);
 
 /* GET_TIME */
+void	refresh_min_max_time(double time);
 double	get_total_time(void);
 double	get_time_ms(struct timeval *start, struct timeval *end);
 void	get_timeday(struct timeval *timeval);

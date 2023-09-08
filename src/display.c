@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:05:37 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/09 00:17:10 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/09 00:38:59 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,21 @@ void    display_ping_header(void)
         printf("PING %s (%s) %d(%d) bytes of data.\n", g_data.host, g_data.ipstr, data_size, packet_size);
 }
 
-void	refresh_ping_info(void)
+void	refresh_ping_info(char *error, int sequence)
 {
 	double time = get_time_ms(&g_data.send_time, &g_data.rec_time);
 
-	if (g_data.sequence == 1)
-	{
-		get_timeday(&g_data.start_time);
-		g_data.max_time = time;
-		g_data.min_time = time;
-	}
-	time < g_data.min_time ? g_data.min_time = time : (void)time;
-	time > g_data.max_time ? g_data.max_time = time : (void)time;
-	printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d ",PING_PACKET_SIZE, g_data.domainname, g_data.ipstr, g_data.sequence, TTL);
-	if (time < 1.0)
-		printf("time=%.3f ms\n", time);
+	refresh_min_max_time(time);
+	if (error != NULL)
+		printf("From %s icmp_seq=%d %s\n", g_data.ipstr, sequence, error);
 	else
-		printf("time=%.2f ms\n", time);
+	{
+		printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d ",PING_PACKET_SIZE, g_data.domainname, g_data.ipstr, g_data.sequence, TTL);
+		if (time < 1.0)
+			printf("time=%.3f ms\n", time);
+		else
+			printf("time=%.2f ms\n", time);
+	}
 }
 
 int		get_percent_loss(void)
@@ -52,7 +50,7 @@ void    display_ping_statistics(void)
 		printf("+%d errors, ", g_data.nb_errors);
 	printf("%d%% packet loss, ", get_percent_loss());
 	printf("time %.0fms\n", get_total_time());
-    printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n", g_data.min_time,0.0,g_data.max_time,0.0);
+    printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n\n", g_data.min_time,0.0,g_data.max_time,0.0);
 }
 
 void    print_data(void)
