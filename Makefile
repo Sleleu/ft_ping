@@ -6,7 +6,7 @@
 #    By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/04 12:59:59 by sleleu            #+#    #+#              #
-#    Updated: 2023/09/06 23:56:33 by sleleu           ###   ########.fr        #
+#    Updated: 2023/09/08 21:49:13 by sleleu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SOURCES =	main.c \
 			init_data.c \
 			display.c \
 			packet.c \
+			analyse_packet.c \
 			get_time.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SOURCES))
