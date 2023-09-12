@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:05:37 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/12 12:46:44 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/12 14:41:01 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ void	refresh_rtt_stats(double time)
 	g_data.rtt_sqrt_total += time * time;
 	g_data.avg_time = g_data.rtt_total / packet_received;
 	double variance = (g_data.rtt_sqrt_total / packet_received) - (g_data.avg_time * g_data.avg_time);
-	g_data.mdev_time = sqrt(variance);
+    if (variance >= 0)
+        g_data.mdev_time = sqrt(variance);
+    else
+        g_data.mdev_time = 0.0; 
 }
 
 void	refresh_ping_info(char *error, int sequence, int ttl)
