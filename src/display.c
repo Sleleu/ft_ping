@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:05:37 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/12 12:08:06 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/12 12:46:44 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,21 @@ void    display_ping_header(void)
         printf("PING %s (%s) %d(%d) bytes of data.\n", g_data.host, g_data.ipstr, data_size, packet_size);
 }
 
+void	refresh_rtt_stats(double time)
+{
+	int packet_received = g_data.packet_received > 0 ? g_data.packet_received : 1;
+	g_data.rtt_total += time;
+	g_data.rtt_sqrt_total += time * time;
+	g_data.avg_time = g_data.rtt_total / packet_received;
+	double variance = (g_data.rtt_sqrt_total / packet_received) - (g_data.avg_time * g_data.avg_time);
+	g_data.mdev_time = sqrt(variance);
+}
+
 void	refresh_ping_info(char *error, int sequence, int ttl)
 {
 	double time = get_time_ms(&g_data.send_time, &g_data.rec_time);
 	refresh_min_max_time(time);
+	refresh_rtt_stats(time);
 	if (error != NULL)
 		printf("From %s icmp_seq=%d %s\n", g_data.ipstr, sequence, error);
 	else
@@ -49,7 +60,8 @@ void    display_ping_statistics(void)
 		printf("+%d errors, ", g_data.nb_errors);
 	printf("%d%% packet loss, ", get_percent_loss());
 	printf("time %.0fms\n", get_total_time());
-    printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n\n", g_data.min_time,0.0,g_data.max_time,0.0);
+    printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n\n", \
+	g_data.min_time,g_data.avg_time,g_data.max_time,g_data.mdev_time);
 }
 
 void    print_data(void)

@@ -6,7 +6,7 @@
 #    By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/04 12:59:59 by sleleu            #+#    #+#              #
-#    Updated: 2023/09/08 21:49:13 by sleleu           ###   ########.fr        #
+#    Updated: 2023/09/12 12:44:19 by sleleu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ CFLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): libft/libft.a $(OBJ)
-		$(CC) $(CFLAGS)  $(OBJ) -L libft -lft -o $(NAME)
+		$(CC) $(CFLAGS)  $(OBJ) -L libft -lft -lm -o $(NAME)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c | $(OBJ_PATH)
 	$(CC) $(CFLAGS) -c $< -o $@
