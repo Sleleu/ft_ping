@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:05:37 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/09 00:38:59 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/12 12:08:06 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,15 @@ void    display_ping_header(void)
         printf("PING %s (%s) %d(%d) bytes of data.\n", g_data.host, g_data.ipstr, data_size, packet_size);
 }
 
-void	refresh_ping_info(char *error, int sequence)
+void	refresh_ping_info(char *error, int sequence, int ttl)
 {
 	double time = get_time_ms(&g_data.send_time, &g_data.rec_time);
-
 	refresh_min_max_time(time);
 	if (error != NULL)
 		printf("From %s icmp_seq=%d %s\n", g_data.ipstr, sequence, error);
 	else
 	{
-		printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d ",PING_PACKET_SIZE, g_data.domainname, g_data.ipstr, g_data.sequence, TTL);
+		printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d ",PING_PACKET_SIZE - (int)sizeof(struct iphdr), g_data.domainname, g_data.ipstr, g_data.sequence, ttl);
 		if (time < 1.0)
 			printf("time=%.3f ms\n", time);
 		else

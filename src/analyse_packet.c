@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 21:37:51 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/09 00:42:58 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/12 12:05:22 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ char    *get_icmp_code(uint8_t code, t_icmp_code_list *code_list, int size)
 
 void    analyse_packet(void *packet)
 {
+    struct iphdr *ip_header = packet;
     struct icmphdr *icmp_header = packet + sizeof(struct iphdr);
     uint8_t i = 0;
     char *error = NULL;
@@ -91,5 +92,5 @@ void    analyse_packet(void *packet)
     {
         g_data.packet_received++;
     }
-    refresh_ping_info(error, icmp_header->un.echo.sequence);
+    refresh_ping_info(error, icmp_header->un.echo.sequence, ip_header->ttl);
 }

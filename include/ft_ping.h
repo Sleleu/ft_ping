@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/09 00:33:46 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/12 12:07:43 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <signal.h>
 #include "../libft/libft.h" 
 
-#define PING_PACKET_SIZE 64
+#define PING_PACKET_SIZE 84
 #define TTL 64
 
 typedef	struct s_icmp_code_list
@@ -82,7 +82,7 @@ void	init_data(char *argv);
 /* DISPLAY */
 void	display_ping_header(void);
 void	display_ping_statistics(void);
-void	refresh_ping_info(char *error, int sequence);
+void	refresh_ping_info(char *error, int sequence, int ttl);
 void    print_data(void);
 
 /* PACKET */
