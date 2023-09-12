@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:25:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/08 21:40:20 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/12 14:54:43 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ void create_packet(void)
 
     // send packet
     ssize_t bytes_sent = sendto(g_data.sockfd, &packet, PING_PACKET_SIZE, 0, (struct sockaddr *)g_data.sockaddr, sizeof(*g_data.sockaddr));
-    if (bytes_sent == -1) {
+    if (bytes_sent == -1)
+    {
         fprintf(stderr, "ft_ping: sendto error\n");
-        exit(EXIT_FAILURE);
+        exit_failure(1);
     }
     alarm(1);
 }
@@ -86,7 +87,7 @@ void receive_packet(void)
     if (bytes_received == -1)
     {
         fprintf(stderr,"ft_ping: recvmsg error\n");
-        exit(EXIT_FAILURE);
+        exit_failure(1);
     }
     //printf("Receive_packet(): bytes received = %ld\n", bytes_received);  
     get_timeday(&g_data.rec_time);
