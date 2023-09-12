@@ -6,7 +6,7 @@
 /*   By: sleleu <sleleu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:02:43 by sleleu            #+#    #+#             */
-/*   Updated: 2023/09/12 12:43:12 by sleleu           ###   ########.fr       */
+/*   Updated: 2023/09/12 13:26:09 by sleleu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ extern t_data g_data;
 
 
 /* MAIN */
+char	*parsing(int argc, char **argv);
 void	exit_failure(int code);
 
 /* INIT_DATA */
@@ -85,6 +86,7 @@ void	get_domainname(void);
 void	init_data(char *argv);
 
 /* DISPLAY */
+void	refresh_rtt_stats(double time);
 void	display_ping_header(void);
 void	display_ping_statistics(void);
 void	refresh_ping_info(char *error, int sequence, int ttl);
