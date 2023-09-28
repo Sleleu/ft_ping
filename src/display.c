@@ -14,9 +14,9 @@
 
 void    display_ping_header(void)
 {
-        int packet_size = sizeof(t_packet);
+        //int packet_size = sizeof(t_packet);
         int data_size = PING_PACKET_SIZE - (sizeof(struct icmphdr) + sizeof(struct iphdr));
-        printf("PING %s (%s) %d(%d) bytes of data.\n", g_data.host, g_data.ipstr, data_size, packet_size);
+        printf("PING %s (%s): %d data bytes\n", g_data.host, g_data.ipstr, data_size);
 }
 
 void	refresh_rtt_stats(double time)
@@ -41,7 +41,7 @@ void	refresh_ping_info(char *error, int sequence, int ttl)
 		printf("From %s icmp_seq=%d %s\n", g_data.ipstr, sequence, error);
 	else
 	{
-		printf("%d bytes from %s (%s): icmp_seq=%d ttl=%d ",PING_PACKET_SIZE - (int)sizeof(struct iphdr), g_data.domainname, g_data.ipstr, g_data.sequence, ttl);
+		printf("%d bytes from %s: icmp_seq=%d ttl=%d ",PING_PACKET_SIZE - (int)sizeof(struct iphdr), g_data.ipstr, g_data.sequence, ttl);
 		if (time < 1.0)
 			printf("time=%.3f ms\n", time);
 		else
@@ -61,10 +61,12 @@ void    display_ping_statistics(void)
     printf("%d packets transmitted, %d received, ", g_data.sequence, g_data.packet_received);
 	if (g_data.nb_errors)
 		printf("+%d errors, ", g_data.nb_errors);
-	printf("%d%% packet loss, ", get_percent_loss());
-	printf("time %.0fms\n", get_total_time());
-    printf("rtt min/avg/max/mdev = %.3f/%.3f/%.3f/%.3f ms\n\n", \
-	g_data.min_time,g_data.avg_time,g_data.max_time,g_data.mdev_time);
+	printf("%d%% packet loss\n", get_percent_loss());
+	//printf("time %.0fms\n", get_total_time());
+    if (g_data.packet_received > 0) {
+		printf("round-trip min/avg/max/stddev = %.3f/%.3f/%.3f/%.3f ms\n\n", \
+		g_data.min_time,g_data.avg_time,g_data.max_time,g_data.mdev_time);
+	}
 }
 
 void    print_data(void)
