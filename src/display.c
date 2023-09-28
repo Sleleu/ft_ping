@@ -41,7 +41,7 @@ void	refresh_ping_info(char *error, int sequence, int ttl)
 		printf("From %s icmp_seq=%d %s\n", g_data.ipstr, sequence, error);
 	else
 	{
-		printf("%d bytes from %s: icmp_seq=%d ttl=%d ",PING_PACKET_SIZE - (int)sizeof(struct iphdr), g_data.ipstr, g_data.sequence, ttl);
+		printf("%d bytes from %s: icmp_seq=%d ttl=%d ",PING_PACKET_SIZE - (int)sizeof(struct iphdr), g_data.ipstr, sequence, ttl);
 		if (time < 1.0)
 			printf("time=%.3f ms\n", time);
 		else
@@ -57,7 +57,7 @@ int		get_percent_loss(void)
 
 void    display_ping_statistics(void)
 {
-	printf("\n--- %s ping statistics ---\n", g_data.host);
+	printf("--- %s ping statistics ---\n", g_data.host);
     printf("%d packets transmitted, %d received, ", g_data.sequence, g_data.packet_received);
 	if (g_data.nb_errors)
 		printf("+%d errors, ", g_data.nb_errors);
