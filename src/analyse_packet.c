@@ -69,7 +69,9 @@ void    analyse_packet(void *packet)
     char *error = NULL;
 
     if (icmp_header->type == ICMP_ECHO)
-        return ;
+        return;
+    if (icmp_header->un.echo.id != g_data.pid)
+        return;
     if (icmp_header->type != ICMP_ECHOREPLY)
     {
         if (icmp_header->type == ICMP_DEST_UNREACH)
