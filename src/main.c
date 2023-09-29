@@ -35,20 +35,35 @@ void	exit_failure(int code)
 	exit(code);
 }
 
-char *parsing(int argc, char **argv)
+void	display_man(void)
+{
+	char *man = "Usage: ping [OPTION...] HOST ...\n\
+	\rSend ICMP ECHO_REQUEST packets to network hosts.\n\n\
+	\r Options valid for all request types:\n\n\
+	\r  -v			verbose output\n\n\
+	\r Options valid for --echo requests:\n\n\
+	\r  -?			give this help list\n\n";
+	printf("%s", man);
+	exit(EXIT_SUCCESS);
+}
+
+char	*parsing(int argc, char **argv)
 {
 	int		i = 1;
 	char	*ip = NULL;
-	if (argc == 2)
+	if (argc == 2 && argv[i][0] != '-')
 		return (argv[1]);
 	while (argv[i])
 	{
 		if (argv[i][0] == '-')
 		{
-			for (int j = 1; argv[i][j]; j++)
+			for (int j = 1; argv[i][j]; j++) {
+				if (argv[i][j] == '?')
+					display_man();
 				if (argv[i][j] != 'v')
 					return (fprintf(stderr, "ft_ping: invalid option -- '%c'\n", argv[i][j]),\
 					exit(2), NULL);
+			}
 			g_data.verbose = true;
 		}
 		else
