@@ -25,8 +25,9 @@ void init_sockaddr(void)
 	int status = getaddrinfo(g_data.host, NULL, &hints, &result);
     if (status != 0)
 	{
-		fprintf(stderr, "ft_ping: %s: %s\n", g_data.host, gai_strerror(status));
-		exit_failure(2);
+		//fprintf(stderr, "ft_ping: %s: %s\n", g_data.host, gai_strerror(status));
+		fprintf(stderr, "./ft_ping: unknow host");
+		exit_failure(1);
 	}
     g_data.result = result;	
     g_data.sockaddr = (struct sockaddr_in *)result->ai_addr;
