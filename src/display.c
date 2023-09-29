@@ -12,11 +12,35 @@
 
 #include "../include/ft_ping.h"
 
+void	ft_putnbr_base(int nbr, char *base)
+{
+	long int	i;
+	long int	base_len;
+
+	base_len = ft_strlen(base);
+	i = nbr;
+	if (nbr < 0)
+	{
+		write(1, "-", 1);
+		i = -i;
+	}
+	if (i > base_len - 1)
+		ft_putnbr_base(i / base_len, base);
+	i = i % base_len;
+	write(1, &base[i], 1);
+}
+
 void    display_ping_header(void)
 {
         //int packet_size = sizeof(t_packet);
         int data_size = PING_PACKET_SIZE - (sizeof(struct icmphdr) + sizeof(struct iphdr));
-        printf("PING %s (%s): %d data bytes\n", g_data.host, g_data.ipstr, data_size);
+        dprintf(0,"PING %s (%s): %d data bytes", g_data.host, g_data.ipstr, data_size);
+		if (g_data.verbose == true) {
+			dprintf(0, " id 0x");
+			ft_putnbr_base(g_data.pid, "0123456789abcdef");
+			dprintf(0, " = %d", g_data.pid);
+		}
+		printf("\n");
 }
 
 void	refresh_rtt_stats(double time)
@@ -58,7 +82,7 @@ int		get_percent_loss(void)
 void    display_ping_statistics(void)
 {
 	printf("--- %s ping statistics ---\n", g_data.host);
-    printf("%d packets transmitted, %d received, ", g_data.sequence, g_data.packet_received);
+    printf("%d packets transmitted, %d packets received, ", g_data.sequence, g_data.packet_received);
 	if (g_data.nb_errors)
 		printf("+%d errors, ", g_data.nb_errors);
 	printf("%d%% packet loss\n", get_percent_loss());

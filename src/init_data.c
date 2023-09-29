@@ -52,11 +52,6 @@ void	get_ipstr(void)
         struct sockaddr_in *ipv4 = (struct sockaddr_in *)g_data.sockaddr;
         inet_ntop(AF_INET, &(ipv4->sin_addr), g_data.ipstr, INET_ADDRSTRLEN);
     }
-    else if (g_data.sockaddr->sin_family == AF_INET6)
-    {
-        struct sockaddr_in6 *ipv6 = (struct sockaddr_in6 *)g_data.sockaddr;
-        inet_ntop(AF_INET6, &(ipv6->sin6_addr), g_data.ipstr, INET6_ADDRSTRLEN);
-    }
     else
     {
         fprintf(stderr, "ft_ping: Unknown address family\n");

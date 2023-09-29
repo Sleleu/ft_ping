@@ -67,7 +67,6 @@ void    analyse_packet(void *packet)
     struct icmphdr *icmp_header = packet + sizeof(struct iphdr);
     uint8_t i = 0;
     char *error = NULL;
-
     if (icmp_header->type == ICMP_ECHO)
         return;
     if (icmp_header->un.echo.id != g_data.pid)

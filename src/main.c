@@ -47,8 +47,9 @@ char *parsing(int argc, char **argv)
 		{
 			for (int j = 1; argv[i][j]; j++)
 				if (argv[i][j] != 'v')
-					return (fprintf(stderr, "ft_ping: invalid option\n"),\
+					return (fprintf(stderr, "ft_ping: invalid option -- '%c'\n", argv[i][j]),\
 					exit(2), NULL);
+			g_data.verbose = true;
 		}
 		else
 		{
@@ -74,6 +75,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "ft_ping: usage error: Destination address required\n");
 		return (1);
 	}
+	g_data.verbose = false;
 	char *ip = parsing(argc, argv);
 	signal(SIGINT, signal_handler);
 	signal(SIGALRM, signal_handler);
